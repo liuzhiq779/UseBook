@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './style.js';
-import  './statics/iconfont/iconfont'
+import './statics/iconfont/iconfont.css'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
