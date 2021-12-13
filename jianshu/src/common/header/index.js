@@ -1,4 +1,6 @@
 import React,{ Component } from "react";
+import { connect } from "react-redux";  //让该组件与store建立链接
+import {CSSTransition} from "react-transition-group";
 import {
          HeaderWrapper,
          Logo, Nav, NavItem,
@@ -16,6 +18,7 @@ class Header extends Component {
             focused:false
         }
         this.handleInputFocus = this.handleInputFocus.bind(this)
+        this.handleInputBlur = this.handleInputBlur.bind(this)
     }
 
     render() {
@@ -27,15 +30,22 @@ class Header extends Component {
                      <NavItem className='left'>下载App</NavItem>
                      <NavItem className='right'>登陆</NavItem>
                        <SearchWrapper>
-                       <NavSearch
-                       className={this.state.focused ? 'focused': ''}
-                       onFocus={this.handleInputFocus}
-                       ></NavSearch>
-                       <span className={this.state.focused ? 'focused iconfont': 'iconfont'}>&#xe614;</span>
-                       </SearchWrapper>
-                       <NavItem className='right'>
-                           <span className="iconfont">&#xe636;</span>
-                       </NavItem>
+                        < CSSTransition
+                            in={this.state.focused}
+                           timeout={200}
+
+                        >
+                           <NavSearch
+                          className={this.state.focused ? 'focused' : ''}
+                          onFocus={this.handleInputFocus}
+                          onBlur={this.handleInputBlur}
+                           />
+                         </CSSTransition>
+                           <span className={this.state.focused ? 'focused iconfont': 'iconfont'}>&#xe614;</span>
+                           </SearchWrapper>
+                           <NavItem className='right'>
+                               <span className="iconfont">&#xe636;</span>
+                           </NavItem>
                    </Nav>
                    <Addition>
                       <Button className='writting'>
@@ -47,10 +57,17 @@ class Header extends Component {
                </HeaderWrapper>
         )
     }
+    //聚焦事件
     handleInputFocus(){
        this.setState({
-
+         focused:true
        })
+    }
+    //失焦事件
+    handleInputBlur(){
+        this.setState({
+            focused:false
+        })
     }
 }
 
