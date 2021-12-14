@@ -11,16 +11,13 @@ import '../../statics/iconfont/iconfont.css'
 
 
 
+
 class Header extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            focused:false
-        }
-        this.handleInputFocus = this.handleInputFocus.bind(this)
-        this.handleInputBlur = this.handleInputBlur.bind(this)
+       // this.handleInputFocus = this.handleInputFocus.bind(this)
+        //this.handleInputBlur = this.handleInputBlur.bind(this)
     }
-
     render() {
         return (
                <HeaderWrapper>
@@ -31,17 +28,17 @@ class Header extends Component {
                      <NavItem className='right'>登陆</NavItem>
                        <SearchWrapper>
                         < CSSTransition
-                            in={this.state.focused}
+                            in={this.props.focused}
                            timeout={200}
 
                         >
                            <NavSearch
-                          className={this.state.focused ? 'focused' : ''}
-                          onFocus={this.handleInputFocus}
-                          onBlur={this.handleInputBlur}
+                          className={this.props.focused ? 'focused' : ''}
+                          onFocus={this.props.handleInputFocus}
+                          onBlur={this.props.handleInputBlur}
                            />
                          </CSSTransition>
-                           <span className={this.state.focused ? 'focused iconfont': 'iconfont'}>&#xe614;</span>
+                           <span className={this.props.focused ? 'focused iconfont': 'iconfont'}>&#xe614;</span>
                            </SearchWrapper>
                            <NavItem className='right'>
                                <span className="iconfont">&#xe636;</span>
@@ -58,17 +55,45 @@ class Header extends Component {
         )
     }
     //聚焦事件
-    handleInputFocus(){
-       this.setState({
-         focused:true
-       })
-    }
+    // handleInputFocus(){
+    //    this.setState({
+    //      focused:true
+    //    })
+    // }
     //失焦事件
-    handleInputBlur(){
-        this.setState({
-            focused:false
-        })
+    // handleInputBlur(){
+    //     this.setState({
+    //         focused:false
+    //     })
+    // }
+}
+
+//把store里面的数据映射到这里，state这个参数存储了store里面的所有数据
+const mapStateToProps = (state) => {
+    return {
+       //把组件里面的数据映射到props里面
+        focused: state.focused
     }
 }
 
-export  default Header
+
+//这是派发数据的，改变数据的状态
+const mapDispathToProps = (dispatch) =>{
+    return {
+       handleInputFocus(){
+         const action = {
+             type: 'search_focus'
+         }
+         dispatch(action)
+       },
+
+        handleInputBlur(){
+           const action ={
+               type: 'search_blur'
+           }
+           dispatch(action)
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispathToProps)(Header);
